@@ -37,8 +37,8 @@ public class StadiumRepositoryTest {
 		morumbi = new Stadium("Morumbi",70000,10);
 		maracana = new Stadium("Maracanã",90000,15);
 		mineirao = new Stadium("Mineirão",50000,7);
-		stadium = new Stadium();
-		fetchedStadium = new Stadium();
+
+		Stadium fetchedStadium = new Stadium();
 	}
 
 	@After
@@ -77,9 +77,6 @@ public class StadiumRepositoryTest {
 	@Test
 	public void theEntityShouldNotBeNullAfterPersists() {
 
-		assertThat(fetchedStadium.getId(), is(nullValue()));
-		assertThat(fetchedStadium.getName(), is(nullValue()));
-
 		stadiumRepository.save(maracana);
 		Stadium fetchedStadium = stadiumRepository.findOne(maracana.getId());
 
@@ -89,12 +86,17 @@ public class StadiumRepositoryTest {
 	@Test
 	public void theFetchedIdAndTheFetchedNameShouldBeTheSameOfTheInstantiatedEntity() {
 
-		assertThat(fetchedStadium.getId(), is(stadium.getName()));
-		stadiumRepository.save(stadium);
-		Stadium fetchedStadium = stadiumRepository.findOne(stadium.getId());
-		stadium.setName("Mineirinho");
+		stadiumRepository.save(maracana);
+		Stadium fetchedStadium = stadiumRepository.findOne(maracana.getId());
 
-		assertThat(fetchedStadium.getName(), is(not(stadium.getName())));
+		assertThat(fetchedStadium.getId(), is(maracana.getId()));
+		assertThat(fetchedStadium.getName(), is(maracana.getName()));
+
+		stadiumRepository.save(maracana);
+		fetchedStadium = stadiumRepository.findOne(maracana.getId());
+		maracana.setName("Mineirinho");
+
+		assertThat(fetchedStadium.getName(), is(not(maracana.getName())));
 
 	}
 }
