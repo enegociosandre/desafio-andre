@@ -7,10 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * 
@@ -25,6 +29,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name = "STADIUM")
 @ApiModel
+@Validated
 public class Stadium extends Object implements Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -35,14 +40,18 @@ public class Stadium extends Object implements Serializable {
 	    private Integer id;
 
 		@ApiModelProperty(notes = "Nome do estádio" , position = 1, value = "name", name = "name", dataType = "String", example = "Arena da Baixada", required = true)
-	    private String name;
+		@NotNull(message = "Nome do Estadio não pode ser null")
+		@NotEmpty(message = "Nome do Estadio não pode ser vazio")
+		private String name;
 
 		@ApiModelProperty(notes = "Capacidade de público máximo sentado", position = 2, value = "seatingCapacity", name = "seatingCapacity", dataType = "int", example = "10000", required = true)
-	    private int seatingCapacity;
+		@Range(min=0, max=1000000)
+		private int seatingCapacity;
 
 		@ApiModelProperty(notes = "Número de restaurantes associados", position = 3, value = "associatedRestaurants", name = "associatedRestaurants", dataType = "int", example = "100", required = true)
-	    private int associatedRestaurants;
-	    
+		@Range(min=0, max=1000000)
+		private int associatedRestaurants;
+
 	    public Stadium() {
 			
 		}

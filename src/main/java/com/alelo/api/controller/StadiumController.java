@@ -1,6 +1,9 @@
 package com.alelo.api.controller;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,7 +56,7 @@ public class StadiumController {
 	            errorAsJson.put("verb", "GET");
 	            errorAsJson.put("exception", exception.getClass());
 	            errorAsJson.put("path", "/stadium");
-	            errorAsJson.put("timestamp", new Date());
+	            errorAsJson.put("timestamp", Instant.now());
 	            errorAsJson.put("message", exception.getMessage());
 
 	            return new ResponseEntity<>(errorAsJson, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -83,7 +86,7 @@ public class StadiumController {
 	            errorAsJson.put("verb", "GET");
 	            errorAsJson.put("exception", exception.getClass());
 	            errorAsJson.put("path", "/stadium/" + id);
-	            errorAsJson.put("timestamp", new Date());
+	            errorAsJson.put("timestamp", Instant.now());
 	            errorAsJson.put("message", exception.getMessage());
 
 	            return new ResponseEntity<>(errorAsJson, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -96,7 +99,8 @@ public class StadiumController {
 	            @ApiResponse(code = 201, message = "Criado a lista com sucesso"),
 	            @ApiResponse(code = 401, message = "Você não está autorizado a ver esse recurso"),
 	            @ApiResponse(code = 403, message = "Acessar o recurso que você está tentando não é permitido"),
-	            @ApiResponse(code = 404, message = "O recurso não foi encontrado")
+	            @ApiResponse(code = 404, message = "O recurso não foi encontrado"),
+				@ApiResponse(code = 409, message = "Um registro com este nome já existe")
 	    })
 	    public ResponseEntity<?> saveStadium(@RequestBody Stadium stadium) {
 	        try {
@@ -104,7 +108,7 @@ public class StadiumController {
 	            if(null != storedStadium)
 	                return new ResponseEntity<>(storedStadium, HttpStatus.CONFLICT);
 	            else {
-	                
+
 	                stadiumService.saveStadium(stadium);
 
 	                return new ResponseEntity<>(stadium, HttpStatus.CREATED);
@@ -114,8 +118,8 @@ public class StadiumController {
 
 	            errorAsJson.put("verb", "POST");
 	            errorAsJson.put("exception", exception.getClass());
-	            errorAsJson.put("path", "/stadium");
-	            errorAsJson.put("timestamp", new Date());
+	            errorAsJson.put("path", "/stadiums");
+	            errorAsJson.put("timestamp", Instant.now());
 	            errorAsJson.put("message", exception.getMessage());
 
 	            return new ResponseEntity<>(errorAsJson, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -151,8 +155,8 @@ public class StadiumController {
 
 	            errorAsJson.put("verb", "PUT");
 	            errorAsJson.put("exception", exception.getClass());
-	            errorAsJson.put("path", "/stadium/" + id);
-	            errorAsJson.put("timestamp", new Date());
+	            errorAsJson.put("path", "/stadiums/" + id);
+	            errorAsJson.put("timestamp", Instant.now());
 	            errorAsJson.put("message", exception.getMessage());
 
 	            return new ResponseEntity<>(errorAsJson, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -182,8 +186,8 @@ public class StadiumController {
 
 	            errorAsJson.put("verb", "DELETE");
 	            errorAsJson.put("exception", exception.getClass());
-	            errorAsJson.put("path", "/stadium/" + id);
-	            errorAsJson.put("timestamp", new Date());
+	            errorAsJson.put("path", "/stadiums/" + id);
+	            errorAsJson.put("timestamp", Instant.now());
 	            errorAsJson.put("message", exception.getMessage());
 
 	            return new ResponseEntity<>(errorAsJson, HttpStatus.INTERNAL_SERVER_ERROR);
